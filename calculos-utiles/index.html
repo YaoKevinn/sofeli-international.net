@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Calculos Utiles</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <script src="jquery.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        p{
+          display:inline;
+          font-size: 25px;
+        }
+        body{
+          background-color: #CCC;
+          color:gray;
+          font-family: 'Raleway', sans-serif;
+        }
+        .main{
+          margin : auto;
+          margin-top: 50px;
+          text-align: center;
+          border : 2px solid gray;
+          border-radius: 20px;
+          box-shadow: 3px 3px rgba(0,0,0,0.2);
+          width: 90%;
+          background-color: rgba(255,255,255,0.8);
+        }
+        /* #form input{
+            width: 100px;
+            height : 30px;
+        } */
+        #form2 input{
+            width: 100px;
+            height: 30px !important;
+        }
+        .input-radio{
+          width: 20px !important;
+          position: relative;
+          top: 7px;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <h1 style="display:inline;">Calculo TNA</h1><h5 style="display:inline;"> (aproximado)</h5>
+      <br><br>
+      <form id="form" style="font-size:20px;">
+        Saldo a financiar (no abonado) : <input type="number" step="0.01" name="saldo" placeholder="0.00"> ARS
+        <br>
+        Tasa Nominal Anual (TNA) : <input type="number" step="0.01" name="tna" placeholder="0.00"> %
+        <br>
+        <br>
+        <!-- <input type="submit" name="confirm" value="Calcular" style="width:30%; height:30px; border-radius:10px; border-color:darkgray;"> -->
+        <button id="btn-form1" type="button" class="btn btn-primary">Averiguar</button>
+        <br>
+        <br>
+        <br>
+        Interes Anual : <p id="interesAnual">0.00</p> ARS + iva <p id="ivaAnual">0.00 </p> ARS<br>
+        <br>
+        Interes Mensual : <p id="interesMensual">0.00</p> ARS + iva <p id="ivaMensual">0.00 </p> ARS<br>
+        <br>
+        Interes Diario : <p id="interesDiario">0.00</p> ARS + iva <p id="ivaDiario">0.00 </p> ARS<br>
+        <br>
+      </form>
+      <!-- Programa despues de apretar Confirmar -->
+      <script type="text/javascript">
+          function actualizar(){
+            var saldoTotal = document.getElementById('form').saldo.value;
+            var tna = document.getElementById('form').tna.value;
+
+            $('#interesAnual').html((saldoTotal*tna/100).toFixed(2));
+            $('#interesMensual').html((saldoTotal*30*tna/100/365).toFixed(2));
+            $('#interesDiario').html((saldoTotal*tna/100/365).toFixed(2));
+            // document.getElementById('interesAnual').innerHTML = (saldoTotal*tna/100).toFixed(2);
+            // document.getElementById('interesMensual').innerHTML = (saldoTotal*tna/100/12).toFixed(2);
+            // document.getElementById('interesDiario').innerHTML = (saldoTotal*tna/100/12/30).toFixed(2);
+           $('#ivaAnual').html((saldoTotal*tna*0.21/100).toFixed(2));
+           $('#ivaMensual').html((saldoTotal*tna*0.21/100/12).toFixed(2));
+           $('#ivaDiario').html((saldoTotal*tna*0.21/100/12/30).toFixed(2));
+            // document.getElementById('ivaAnual').innerHTML = (saldoTotal*tna*0.21/100).toFixed(2);
+            // document.getElementById('ivaMensual').innerHTML = (saldoTotal*tna*0.21/100/12).toFixed(2);
+            // document.getElementById('ivaDiario').innerHTML = (saldoTotal*tna*0.21/100/12/30).toFixed(2);
+          }
+          actualizar();
+
+          $('#btn-form1').click(function(){
+
+            actualizar();
+
+          });
+
+
+      </script>
+
+    </div>
+
+    <div class="main" style="margin-bottom: 50px;">
+
+      <h2>Calculo Impuestos Cuenta Corriente</h2>
+      <br>
+      <form id="form2" style="font-size:20px;">
+            <h4>Saldo en Cuenta Corriente a cubrir : </h4>
+            $<input type="number" name="saldoACubrir" value="" step="0.01" style="height:20px;" placeholder="0.00">ARS
+            <br>
+            <br>
+            <h3>Impuesto : </h3>
+            <input class="input-radio" type="radio" name="impuesto" value="0.006" checked>0.6%
+            <input class="input-radio" type="radio" name="impuesto" value="0.012">1.2%
+            <br><br>
+            <!-- <input type="submit" name="confirm" value="Averiguar" style="width:30%; height:30px; border: 2px solid gray; border-radius:10px; background-color:white;" > -->
+            <button id="btn-form2" type="button" class="btn btn-primary">Averiguar</button>
+            <br>
+            <br>
+            <h4>Impuesto : $<span id="difImp"></span> </h4>
+            <h4>Valor a traspasar : $<span id="valorACubrir">0.00</span> </h4>
+      </form>
+      <script type="text/javascript" charset="utf-8">
+            function getResult(){
+              var valorACubrir = document.getElementById('form2').saldoACubrir.value;
+              var impuesto = document.getElementById('form2').impuesto.value;
+              var resultado = (valorACubrir/(1-impuesto)).toFixed(2);
+              document.getElementById('difImp').innerHTML = (resultado-valorACubrir).toFixed(2);
+              document.getElementById('valorACubrir').innerHTML = resultado;
+            }
+
+            getResult();
+
+            $('#btn-form2').click(function(){
+              getResult();
+            });
+       </script>
+</div>
+
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </body>
+</html>
